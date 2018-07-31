@@ -1,0 +1,5 @@
+Flask
+uwsgi
+anaconda
+keras
+tensorflow
