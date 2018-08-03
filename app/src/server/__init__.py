@@ -1,10 +1,16 @@
-from flask import Flask
+from flask import Flask, render_template
 from . import detector
+
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('config.default')
-# app.config.from_envvar('APP_CONFIG_FILE')
 
-blueprints = [detector]
-for blueprint in blueprints:
-    app.register_blueprint(blueprint.app)
+
+@app.route('/index')
+def index():
+    return render_template('index.html')
+
+
+# blueprints = [detector]
+# for blueprint in blueprints:
+#     app.register_blueprint(blueprint.app)

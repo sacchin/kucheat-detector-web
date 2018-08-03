@@ -2,10 +2,10 @@
 <html lang="ja">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="/static/css/kucheat_ssd_front.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
-    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/kucheat_ssd_front.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='kucheat_ssd_front.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='kucheat_ssd_front.js') }}"></script>
     <title>Mawile Detector</title>
 </head>
 <body>

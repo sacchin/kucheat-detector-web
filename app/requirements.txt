@@ -3,3 +3,5 @@ uwsgi
 anaconda
 keras
 tensorflow
+boto3
+werkzeug
