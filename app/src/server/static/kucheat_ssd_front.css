@@ -1,0 +1,16 @@
+#droparea{
+    border: gray solid 1em;
+    padding: 2em;
+}
+
+#viewarea{
+    border: gray solid 1em;
+    padding: 2em;
+}
+
+#image{
+    width: 100px;
+    height: 100px;
+    border: gray solid 1em;
+    padding: 2em;
+}

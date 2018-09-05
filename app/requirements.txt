@@ -1,0 +1,9 @@
+Flask
+uwsgi
+anaconda
+keras
+tensorflow
+boto3
+werkzeug
+PyDrive
+google-api-python-client
