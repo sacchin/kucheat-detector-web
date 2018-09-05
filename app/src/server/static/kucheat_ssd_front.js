@@ -1,8 +1,8 @@
 $(function() {
   var file = null; // 選択されるファイル
   var blob = null; // 画像(BLOBデータ)
-  const THUMBNAIL_WIDTH = 800; // 画像リサイズ後の横の長さの最大値
-  const THUMBNAIL_HEIGHT = 600; // 画像リサイズ後の縦の長さの最大値
+  const THUMBNAIL_WIDTH = 80; // 画像リサイズ後の横の長さの最大値
+  const THUMBNAIL_HEIGHT = 60; // 画像リサイズ後の縦の長さの最大値
 
   // ファイルが選択されたら
   $('input[type=file]').change(function() {
@@ -79,19 +79,39 @@ $(function() {
     var name, fd = new FormData();
     fd.append('file', blob); // ファイルを添付する
     $.ajax({
-      url: "https://q6xvlk3kpg.execute-api.ap-northeast-1.amazonaws.com/default/kucheat-detector", // 送信先
+      url: "http://192.168.99.100/detect", // 送信先
       type: 'POST',
       data: fd,
       processData: false,
       contentType: false
     })
-    .done(function( data, textStatus, jqXHR ) {
+    .done(function(data, textStatus, jqXHR ) {
       $('#error').text("成功！");
     })
-    .fail(function( jqXHR, textStatus, errorThrown ) {
+    .fail(function(jqXHR, textStatus, errorThrown ) {
+      console.log(blob);
       $('#error').text("失敗。。。");
     });  
 
+  });
+
+
+
+  // アップロード開始ボタンがクリックされたら
+  $('#test').click(function(){
+    $.ajax({
+      url: "http://192.168.99.100/detect", // 送信先
+      type: 'GET',
+      processData: false,
+      contentType: false
+    })
+    .done(function(data, textStatus, jqXHR ) {
+      $('#error').text("成功！");
+    })
+    .fail(function(jqXHR, textStatus, errorThrown ) {
+      console.log(blob);
+      $('#error').text("失敗。。。");
+    });
   });
 
 });
