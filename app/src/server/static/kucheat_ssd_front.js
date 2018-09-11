@@ -1,3 +1,4 @@
+
 $(function() {
   var file = null; // 選択されるファイル
   var blob = null; // 画像(BLOBデータ)
