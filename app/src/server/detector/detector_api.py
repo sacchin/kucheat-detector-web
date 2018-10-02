@@ -52,7 +52,9 @@ def detect():
 
         if saved:
             uploadGoogleDrive(save_path, filename)
-            return jsonify(ResultSet={"result": filename})
+            
+            box = ssd_predict(save_path, filename)
+            return jsonify(ResultSet={"result": filename, "box": box})
         else:
             return jsonify(ResultSet={"result": "ext is not allowed"})
 
@@ -88,6 +90,7 @@ def uploadGoogleDrive(save_path, filename):
     })
     f.SetContentFile(os.path.join(save_path, filename))
     f.Upload()
+
 
 def ssd_predict(save_path, filename):
     weight_file = current_app.config['WEIGHT_FILE']

@@ -5,25 +5,19 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 
-app = Flask(__name__, instance_relative_config=True)
-app.config.from_object('config.default')
-
-blueprints = [detector]
-for blueprint in blueprints:
-    app.register_blueprint(blueprint.app)
-
-
 def not_exist_makedirs(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
 
-def init_app(app, log_dir='.'):
+def init_app(app):
+    log_path = app.config['LOG_PATH']
+
     formatter = logging.Formatter(
         '%(asctime)s %(levelname)s: %(message)s '
         '[in %(pathname)s:%(lineno)d]'
     )
-    debug_log = os.path.join(app.root_path, '../logs/debug.log')
+    debug_log = os.path.join(log_path, 'debug.log')
     not_exist_makedirs(os.path.dirname(debug_log))
 
     debug_file_handler = RotatingFileHandler(
@@ -34,7 +28,7 @@ def init_app(app, log_dir='.'):
     debug_file_handler.setFormatter(formatter)
     app.logger.addHandler(debug_file_handler)
 
-    error_log = os.path.join(app.root_path, '../logs/error.log')
+    error_log = os.path.join(log_path, 'error.log')
     not_exist_makedirs(os.path.dirname(error_log))
     error_file_handler = RotatingFileHandler(
         error_log, maxBytes=100000, backupCount=10
@@ -44,3 +38,12 @@ def init_app(app, log_dir='.'):
     app.logger.addHandler(error_file_handler)
 
     app.logger.setLevel(logging.DEBUG)
+
+
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_object('config.default')
+init_app(app)
+
+blueprints = [detector]
+for blueprint in blueprints:
+    app.register_blueprint(blueprint.app)

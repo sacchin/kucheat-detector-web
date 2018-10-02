@@ -9,6 +9,7 @@ services:
       - "3031:3031"
     environment:
       TZ: "Asia/Tokyo"
+    dns: 8.8.8.8
 
   nginx:
     build: ./nginx
@@ -20,3 +21,4 @@ services:
       - "80:80"
     environment:
       TZ: "Asia/Tokyo"
+    dns: 8.8.8.8
