@@ -54,7 +54,7 @@ def explanatory_json():
 def index():
     logger = current_app.logger
     logger.info("serving index")
-    return render_template('index.html')
+    return render_template('detect.html')
 
 
 @app.route('/detect', methods=['GET', 'POST'])
