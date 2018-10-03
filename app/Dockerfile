@@ -2,6 +2,8 @@
 FROM python:3.6
 
 RUN mkdir /var/www
+RUN mkdir /var/log/mawile
+
 # workdirの指定
 WORKDIR /var/www
 
