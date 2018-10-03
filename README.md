@@ -79,7 +79,17 @@ passwd: all authentication tokens updated successfully.
 [ec2-user@ip-x-x-x-X ~]$ mv origin/ images/
 [ec2-user@ip-x-x-x-X ~]$ mv poke/ annotations/
 
+
+
+# Google analytics
+* プロパティIDを取得
+* スクリプトを生成
+* 対象のHTMLにスクリプトをはっつける
+
+
+
 ## 参考
 * https://qiita.com/michimani/items/fc64dcbe721d91579ccb
 * https://jp.ubunifu.co/python/jupyterhub-pyenv-anaconda%E7%92%B0%E5%A2%83%E6%A7%8B%E7%AF%89%EF%BC%88aws-ec2%EF%BC%89
 * https://haitenaipants.hatenablog.com/entry/2018/06/21/210108
+* https://recipe.kc-cloud.jp/archives/11084

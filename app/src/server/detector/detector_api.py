@@ -5,6 +5,8 @@
 import os
 import numpy as np
 import pickle
+import json
+import time
 from flask import Blueprint, render_template, request, jsonify, current_app
 from werkzeug import secure_filename
 from pydrive.auth import GoogleAuth
@@ -35,6 +37,19 @@ def dir_preparation(upload_path):
         os.makedirs(upload_path)
 
 
+def explanatory_json():
+    explanatory_file = current_app.config['EXPLAINATORY_TEXT_FILE']
+    with open(explanatory_file, 'r') as f:
+        explanatory = json.load(f)
+
+    name = explanatory['name']
+    classification = explanatory['classification']
+    text_list = explanatory['text_list']
+    mod = int(time.time() * 100) % len(text_list)
+
+    return {"title": '{}{}'.format(name, classification), "explanatory": text_list[mod]}
+
+
 @app.route('/index')
 def index():
     logger = current_app.logger
@@ -53,8 +68,10 @@ def detect():
         if saved:
             uploadGoogleDrive(save_path, filename)
             
-            box = ssd_predict(save_path, filename)
-            return jsonify(ResultSet={"result": filename, "box": box})
+            box = ssd_predict_mock(save_path, filename)
+            ej = explanatory_json()
+
+            return jsonify(ResultSet={"result": filename, "box": box, "explanatory": ej})
         else:
             return jsonify(ResultSet={"result": "ext is not allowed"})
 
@@ -90,6 +107,13 @@ def uploadGoogleDrive(save_path, filename):
     })
     f.SetContentFile(os.path.join(save_path, filename))
     f.Upload()
+
+
+def ssd_predict_mock(save_path, filename):
+    box_array = []
+    box_array.append({'xmin': 0, 'ymin': 0, 'xmax': 50, 'ymax': 50, 'label': 'l1', 'display_txt': 'l1'})
+
+    return box_array
 
 
 def ssd_predict(save_path, filename):
