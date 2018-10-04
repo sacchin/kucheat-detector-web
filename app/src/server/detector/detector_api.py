@@ -64,19 +64,26 @@ def test():
         logger = current_app.logger
         logger.info("serving index")
         try:
-            img_file = request.files
-            return jsonify(ResultSet={"result": "ok", "box": "get image", "fd": img_file})
+            if 'file' not in request.files:
+                return jsonify(ResultSet={"result": "ng", "message": "no image"})
+
+            img_file = request.files['file']
+
+            return jsonify(ResultSet={"result": "ng", "message": "get image"})
         except OSError as err:
             logger.error("OSerror: {0}".format(err))
+            return jsonify(ResultSet={"result": "ng", "message": "OSError"})
         except ValueError as err:
             logger.error("ValueError: {0}".format(err))
+            return jsonify(ResultSet={"result": "ng", "message": "ValueError"})
         except TypeError as err:
             logger.error("TypeError: {0}".format(err))
+            return jsonify(ResultSet={"result": "ng", "message": "TypeError"})
         except:
             logger.error("Unexpected error:{}".format(sys.exc_info()[0]))
-            return jsonify(ResultSet={"result": "ok", "box": "except"})
+            return jsonify(ResultSet={"result": "ng", "box": "except"})
 
-    return jsonify(ResultSet={"result": "only support post."})
+    return jsonify(ResultSet={"result": "ng", "message":"only support post."})
 
 
 @app.route('/detect', methods=['GET', 'POST'])
