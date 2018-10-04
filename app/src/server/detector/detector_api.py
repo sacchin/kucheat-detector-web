@@ -7,6 +7,7 @@ import numpy as np
 import pickle
 import json
 import time
+import sys
 from flask import Blueprint, render_template, request, jsonify, current_app
 from werkzeug import secure_filename
 from pydrive.auth import GoogleAuth
@@ -66,6 +67,7 @@ def test():
             img_file = request.files
             return jsonify(ResultSet={"result": "ok", "box": "get image", "fd": img_file})
         except:
+            logger.error("Unexpected error:{}".format(sys.exc_info()[0]))
             return jsonify(ResultSet={"result": "ok", "box": "except"})
 
     return jsonify(ResultSet={"result": "only support post."})
