@@ -70,11 +70,17 @@ def test():
 
             img_file = request.files['file']
             saved, filename = saveImage(save_path, img_file)
+
             logger.info("save path is {}".format(save_path))
             logger.info("file name is {}".format(img_file.filename))
 
             if saved:
-                return jsonify(ResultSet={"result": "ok", "filename": filename})
+                uploadGoogleDrive(save_path, filename)
+                
+                box = ssd_predict_mock(save_path, filename)
+                ej = explanatory_json()
+
+                return jsonify(ResultSet={"result": "ok", "filename": filename, "box": box, "explanatory": ej})
             else:
                 return jsonify(ResultSet={"result": "ng", "message": filename})
 
@@ -120,7 +126,8 @@ def detect():
 
 def saveImage(save_path, img_file):
     logger = current_app.logger
-    img_file.filename = "{}.png".format(img_file.filename)
+    time_id = time.time()
+    img_file.filename = "{}_{}.png".format(img_file.filename, time_id)
     if img_file and allowed_file(img_file.filename):
         filename = secure_filename(img_file.filename)
         logger.info("secure file name is {}".format(filename))
