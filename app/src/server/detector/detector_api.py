@@ -68,8 +68,13 @@ def test():
                 return jsonify(ResultSet={"result": "ng", "message": "no image"})
 
             img_file = request.files['file']
+            saved, filename = saveImage(save_path, img_file)
 
-            return jsonify(ResultSet={"result": "ng", "message": "get image"})
+            if saved:
+                return jsonify(ResultSet={"result": "ok", "filename": filename})
+            else:
+                return jsonify(ResultSet={"result": "ng", "message": "no saved"})
+
         except OSError as err:
             logger.error("OSerror: {0}".format(err))
             return jsonify(ResultSet={"result": "ng", "message": "OSError"})
