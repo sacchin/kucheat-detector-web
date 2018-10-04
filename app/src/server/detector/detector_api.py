@@ -70,6 +70,8 @@ def test():
 
             img_file = request.files['file']
             saved, filename = saveImage(save_path, img_file)
+            logger.info("save path is {}".format(save_path))
+            logger.info("file name is {}".format(img_file.filename))
 
             if saved:
                 return jsonify(ResultSet={"result": "ok", "filename": filename})
