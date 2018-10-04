@@ -66,6 +66,12 @@ def test():
         try:
             img_file = request.files
             return jsonify(ResultSet={"result": "ok", "box": "get image", "fd": img_file})
+        except OSError as err:
+            logger.error("OSerror: {0}".format(err))
+        except ValueError as err:
+            logger.error("ValueError: {0}".format(err))
+        except TypeError as err:
+            logger.error("TypeError: {0}".format(err))
         except:
             logger.error("Unexpected error:{}".format(sys.exc_info()[0]))
             return jsonify(ResultSet={"result": "ok", "box": "except"})
