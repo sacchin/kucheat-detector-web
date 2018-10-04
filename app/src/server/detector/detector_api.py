@@ -74,7 +74,7 @@ def test():
             if saved:
                 return jsonify(ResultSet={"result": "ok", "filename": filename})
             else:
-                return jsonify(ResultSet={"result": "ng", "message": "no saved"})
+                return jsonify(ResultSet={"result": "ng", "message": filename})
 
         except NameError as err:
             logger.error("NameError: {0}".format(err))
