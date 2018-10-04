@@ -63,7 +63,7 @@ def test():
         logger = current_app.logger
         logger.info("serving index")
         try:
-            img_file = request.files['file']
+            img_file = request.files
             return jsonify(ResultSet={"result": "ok", "box": "get image", "fd": img_file})
         except:
             return jsonify(ResultSet={"result": "ok", "box": "except"})
