@@ -65,7 +65,7 @@ def test():
         logger.info("serving index")
         return jsonify(ResultSet={"result": "ok", "box": "post"})
 
-    return jsonify(ResultSet={"result": "only support post"})
+    return jsonify(ResultSet={"result": "only support post. {}".format(request.method)})
 
 
 @app.route('/detect', methods=['GET', 'POST'])
