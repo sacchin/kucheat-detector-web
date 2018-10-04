@@ -57,11 +57,15 @@ def index():
     return render_template('detect.html')
 
 
-@app.route('/test')
+@app.route('/test', methods=['GET', 'POST'])
 def test():
-    logger = current_app.logger
-    logger.info("serving index")
-    return jsonify(ResultSet={"result": "ok", "box": "test"})
+    if request.method == 'POST':
+        # img_file = request.files['userfile']
+        logger = current_app.logger
+        logger.info("serving index")
+        return jsonify(ResultSet={"result": "ok", "box": "post"})
+
+    return jsonify(ResultSet={"result": "only support post"})
 
 
 @app.route('/detect', methods=['GET', 'POST'])
