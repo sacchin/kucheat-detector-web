@@ -47,8 +47,8 @@ debugButton.addEventListener('click', function() {
 
     console.log(url_d)
     fetch(url_d, {
-        method: 'POST'//,
-        //body: fd
+        method: 'POST',
+        body: fd
     }).then(function(response) {
         if(response){
           return response.json();

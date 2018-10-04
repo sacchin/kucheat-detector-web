@@ -60,12 +60,15 @@ def index():
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     if request.method == 'POST':
-        # img_file = request.files['userfile']
         logger = current_app.logger
         logger.info("serving index")
-        return jsonify(ResultSet={"result": "ok", "box": "post"})
+        try:
+            img_file = request.files['userfile']
+            return jsonify(ResultSet={"result": "ok", "box": "get image"})
+        except:
+            return jsonify(ResultSet={"result": "ok", "box": "except"})
 
-    return jsonify(ResultSet={"result": "only support post. {}".format(request.method)})
+    return jsonify(ResultSet={"result": "only support post."})
 
 
 @app.route('/detect', methods=['GET', 'POST'])
