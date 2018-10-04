@@ -60,6 +60,7 @@ def index():
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
+    save_path = current_app.config['SAVE_PATH']
     if request.method == 'POST':
         logger = current_app.logger
         logger.info("serving index")
