@@ -42,10 +42,13 @@ debugButton.addEventListener('click', function() {
     var context = snapshotCanvas[0].getContext('2d');
     $("#response").text("debug送信！")
     const url_d = 'https://www.mawile.work/test'
+    var name, fd = new FormData();
+    fd.append('file', screwImageBlob); // ファイルを添付する
+
     console.log(url_d)
     fetch(url_d, {
-        method: 'POST'
-        body: 
+        method: 'POST'//,
+        //body: fd
     }).then(function(response) {
         if(response){
           return response.json();
