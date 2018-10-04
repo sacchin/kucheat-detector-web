@@ -75,6 +75,9 @@ def test():
             else:
                 return jsonify(ResultSet={"result": "ng", "message": "no saved"})
 
+        except NameError as err:
+            logger.error("NameError: {0}".format(err))
+            return jsonify(ResultSet={"result": "ng", "message": "NameError"})
         except OSError as err:
             logger.error("OSerror: {0}".format(err))
             return jsonify(ResultSet={"result": "ng", "message": "OSError"})
