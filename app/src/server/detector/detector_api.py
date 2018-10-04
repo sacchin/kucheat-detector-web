@@ -119,8 +119,11 @@ def detect():
 
 
 def saveImage(save_path, img_file):
+    logger = current_app.logger
+    img_file.filename = "{}.png".format(img_file.filename)
     if img_file and allowed_file(img_file.filename):
         filename = secure_filename(img_file.filename)
+        logger.info("secure file name is {}".format(filename))
         dir_preparation(save_path)
         img_file.save(os.path.join(save_path, filename))
         return (True, filename)
