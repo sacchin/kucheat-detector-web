@@ -57,6 +57,13 @@ def index():
     return render_template('detect.html')
 
 
+@app.route('/test')
+def test():
+    logger = current_app.logger
+    logger.info("serving index")
+    return jsonify(ResultSet={"result": "ok", "box": "test"})
+
+
 @app.route('/detect', methods=['GET', 'POST'])
 def detect():
     save_path = current_app.config['SAVE_PATH']

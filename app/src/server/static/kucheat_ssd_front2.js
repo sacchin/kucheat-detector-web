@@ -2,6 +2,7 @@ const player = document.getElementById('player');
 const snapshotCanvas = $('#snapshot');
 const captureButton = document.getElementById('capture');
 const sendButton = document.getElementById('send');
+const debugButton = document.getElementById('debug');
 const img = document.getElementById('image');
 let screwImageBlob;
 let imageCapture;
@@ -37,6 +38,22 @@ captureButton.addEventListener('click', function() {
         console.log('takePhoto() error: ', error);
     });
 });
+debugButton.addEventListener('click', function() {
+    var context = snapshotCanvas[0].getContext('2d');
+    $("#response").text("debug送信！")
+    const url_d = 'https://www.mawile.work/test'
+    console.log(url_d)
+    fetch(url_d, {
+        method: 'GET'
+    }).then(function(response) {
+        if(response){
+          return response.json();
+        }
+        $("#response").text("送信失敗…")
+    }).then(function(json) {
+        $("#response").text(JSON.stringify(json))
+    });
+});
 sendButton.addEventListener('click', function() {
     var context = snapshotCanvas[0].getContext('2d');
     $("#response").text("送信！")
@@ -45,7 +62,10 @@ sendButton.addEventListener('click', function() {
         method: 'POST',
         body: screwImageBlob
     }).then(function(response) {
-        return response.json();
+        if(response){
+          return response.json();
+        }
+        $("#response").text("送信失敗…")
     }).then(function(json) {
         var image = new Image();
         var reader = new FileReader();
