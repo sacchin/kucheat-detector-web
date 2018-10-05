@@ -15,30 +15,8 @@ var handleSuccess = function(stream) {
     imageCapture = new ImageCapture(stream.getVideoTracks()[0]);
     getCapabilities();
 };
-function getCapabilities() {
-    imageCapture.getPhotoCapabilities().then(function(capabilities) {
-        console.log('Camera capabilities:', capabilities);
-        if (capabilities.zoom.max > 0) {
-            zoomInput.min = capabilities.zoom.min;
-            zoomInput.max = capabilities.zoom.max;
-            zoomInput.value = capabilities.zoom.current;
-            zoomInput.classList.remove('hidden');
-        }
-    }).catch(function(error) {
-        console.log('getCapabilities() error: ', error);
-    });
-}
-captureButton.addEventListener('click', function() {
-    imageCapture.takePhoto().then(function(blob) {
-        screwImageBlob = blob
-        console.log('Took photo:', blob);
-        img.classList.remove('hidden');
-        img.src = URL.createObjectURL(blob);
-    }).catch(function(error) {
-        console.log('takePhoto() error: ', error);
-    });
-});
-debugButton.addEventListener('click', function() {
+
+function uploadPhoto() {
     var context = snapshotCanvas[0].getContext('2d');
     $("#response").text("debug送信！")
     const url_d = 'https://www.mawile.work/test'
@@ -51,7 +29,7 @@ debugButton.addEventListener('click', function() {
         body: fd
     }).then(function(response) {
         if(response){
-          return response.json();
+            return response.json();
         }
         $("#response").text("送信失敗…")
     }).then(function(json) {
@@ -61,7 +39,7 @@ debugButton.addEventListener('click', function() {
         var explanatory = json.ResultSet.explanatory;
 
         $("#response").text(JSON.stringify(json))
-        $("#title").text(explanatory.explanatory.title)
+        $("#title").text(explanatory.title)
         $("#explanatory").text(explanatory.explanatory.text)
         //{"ResultSet":{"box":[{"display_txt":"l1","label":"l1","xmax":50,"xmin":0,"ymax":50,"ymin":0}],"explanatory":{"explanatory":{"text":"2つの くちを もつ。 こうとうぶの おおアゴには\nみかくが ないため にがてな ものは こちらで たべる。","versions":"ウルトラムーン"},"title":"クチート【あざむきポケモン】"},"filename":"blob_1538726393.1219766.png","result":"ok"}}
 
@@ -91,6 +69,35 @@ debugButton.addEventListener('click', function() {
         reader.readAsDataURL(screwImageBlob);
 
     });
+}
+
+function getCapabilities() {
+    imageCapture.getPhotoCapabilities().then(function(capabilities) {
+        console.log('Camera capabilities:', capabilities);
+        if (capabilities.zoom.max > 0) {
+            zoomInput.min = capabilities.zoom.min;
+            zoomInput.max = capabilities.zoom.max;
+            zoomInput.value = capabilities.zoom.current;
+            zoomInput.classList.remove('hidden');
+        }
+    }).catch(function(error) {
+        console.log('getCapabilities() error: ', error);
+    });
+}
+captureButton.addEventListener('click', function() {
+    imageCapture.takePhoto().then(function(blob) {
+        screwImageBlob = blob
+        console.log('Took photo:', blob);
+        img.classList.remove('hidden');
+        img.src = URL.createObjectURL(blob);
+
+        uploadPhoto()
+    }).catch(function(error) {
+        console.log('takePhoto() error: ', error);
+    });
+});
+debugButton.addEventListener('click', function() {
+
 });
 sendButton.addEventListener('click', function() {
     var context = snapshotCanvas[0].getContext('2d');
