@@ -1,32 +1,49 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="row mb-2">
-    <video id="player" controls autoplay></video>
-    <canvas id="snapshot"></canvas>
+
+<div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
+    <div class="col-md-6 px-0">
+        <h2 class="display-4 font-italic">ポケモンずかん</h2>
+        <p class="lead my-3">クチートだけのポケモン図鑑です。あなたの周りにあるクチートのグッズやイラストが映るようにして、下の「Captureボタン」を押してください。どこにクチートが写っているかを判定して、クチートについて説明してくれます。</p>
+        <p class="lead mb-0">
+        </p>
+    </div>
 </div>
 
-<div class="row mb-2">
-    <div class="col-md-6">
-        <button id="capture" class="form-control btn btn-primary">Capture</button>
-        <button id="send" class="form-control btn btn-primary">Send</button>
-        <button id="debug" class="form-control btn btn-primary">Debug</button>
-    </div>
 
+<div class="row mb-2">
     <div class="col-md-6">
         <div class="card flex-md-row mb-4 shadow-sm h-md-250">
-        <div class="card-body d-flex flex-column align-items-start">
-            <h3 class="mb-0">
-            <a class="text-dark" href="#" id="title">ポケモン名</a>
-            </h3>
-            <div class="mb-1 text-muted">図鑑NO</div>
-            <p class="card-text mb-auto" id="explanatory">図鑑説明</p>
+            <div class="card-body d-flex flex-column align-items-start">
+                <h3 class="mb-0">
+                    <a class="text-dark" href="#">ここに映るよ</a>
+                </h3>
+                <div class="mb-1 text-muted">撮影中</div>
+                <button id="capture" type="button" class="btn btn-primary">Capture</button>
+            </div>
+            <video id="player" controls autoplay ></video>            
         </div>
-        <img class="card-img-right flex-auto d-none d-lg-block" data-src="holder.js/200x250?theme=thumb" alt="Thumbnail [200x250]" style="width: 200px; height: 250px;" data-holder-rendered="true" id="image">
+    </div>
+    <div class="col-md-6">
+        <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+            <div class="card-body d-flex flex-column align-items-start">
+                <h3 class="mb-0">
+                    <a class="text-dark" href="#" id="title">ポケモン名</a>
+                </h3>
+                <div class="mb-1 text-muted">図鑑NO</div>
+                <p class="card-text mb-auto" id="explanatory">図鑑説明</p>
+            </div>
+            <img class="card-img-right flex-auto d-none d-lg-block" data-src="holder.js/200x250?theme=thumb" alt="Thumbnail [200x250]" style="width: 200px; height: 250px;" data-holder-rendered="true" id="image">
         </div>
     </div>
 </div>
 
+<div class="row mb-2">
+    <div class="col-md-6">
+        <canvas id="snapshot" width=320 height=240></canvas>
+    </div>
+</div>
 
 <div class="field">
     <pre id="response">レスポンス</pre>
