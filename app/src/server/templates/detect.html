@@ -2,12 +2,17 @@
 {% block content %}
 <div class="field">
     <video id="player" controls autoplay width=320 height=240></video>
-    <button id="capture">Capture</button>
-    <button id="send">Send</button>
-    <button id="debug">Debug</button>
     <canvas id="snapshot" width=320 height=240></canvas>
     <img hidden id="image" />
     
+    <pre id="response">レスポンス</pre>
+</div>
+<div class="field">
+    <button id="capture">Capture</button>
+    <button id="send">Send</button>
+    <button id="debug">Debug</button>
+</div>
+<div class="field">
     <pre id="response">レスポンス</pre>
 </div>
 

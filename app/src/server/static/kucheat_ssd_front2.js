@@ -69,17 +69,17 @@ debugButton.addEventListener('click', function() {
                 snapshotCanvas[0].height = imageHeight
                 context.drawImage(image, 0, 0,image.width,image.height,0,0,imageWidth,imageHeight); //canvasに画像を転写
 
-                console.log(results.ResultSet);
 
-                // results.forEach(result => {
-                //     context.font = "20px gradient";
-                //     var resultXmin = result.xmin / imageWidthRatio;
-                //     var resultYmin = result.ymin / imageHeightRatio;
-                //     var resultXmax = result.xmax / imageWidthRatio;
-                //     var resultYmax = result.ymax / imageHeightRatio
-                //     context.fillText(result.class_name, resultXmin , resultYmin - 3);
-                //     context.strokeRect(resultXmin, resultYmin, resultXmax - resultXmin, resultYmax - resultYmin)
-                // });
+                results.ResultSet.box.forEach(result => {
+                    var resultXmin = result.xmin / imageWidthRatio;
+                    var resultYmin = result.ymin / imageHeightRatio;
+                    var resultXmax = result.xmax / imageWidthRatio;
+                    var resultYmax = result.ymax / imageHeightRatio;
+                    context.font = "20px gradient";
+                    context.fillText(result.display_txt, resultXmin , resultYmin - 3);
+                    context.strokeRect(resultXmin, resultYmin, resultXmax - resultXmin, resultYmax - resultYmin);
+                    console.log(result);
+                });
             }
             image.src = evt.target.result;
         }
