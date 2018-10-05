@@ -57,8 +57,12 @@ debugButton.addEventListener('click', function() {
     }).then(function(json) {
         var image = new Image();
         var reader = new FileReader();
-        var results = json
+        var box_list = json.ResultSet.box;
+        var explanatory = json.ResultSet.explanatory;
+
         $("#response").text(JSON.stringify(json))
+        $("#title").text(explanatory.explanatory.title)
+        $("#explanatory").text(explanatory.explanatory.text)
         //{"ResultSet":{"box":[{"display_txt":"l1","label":"l1","xmax":50,"xmin":0,"ymax":50,"ymin":0}],"explanatory":{"explanatory":{"text":"2つの くちを もつ。 こうとうぶの おおアゴには\nみかくが ないため にがてな ものは こちらで たべる。","versions":"ウルトラムーン"},"title":"クチート【あざむきポケモン】"},"filename":"blob_1538726393.1219766.png","result":"ok"}}
 
         reader.onload = function(evt) {
@@ -67,10 +71,10 @@ debugButton.addEventListener('click', function() {
                 let imageHeightRatio = image.height / imageHeight
                 snapshotCanvas[0].width = imageWidth
                 snapshotCanvas[0].height = imageHeight
-                context.drawImage(image, 0, 0,image.width,image.height,0,0,imageWidth,imageHeight); //canvasに画像を転写
+                context.drawImage(image, 0, 0, image.width, image.height, 0, 0, imageWidth, imageHeight); //canvasに画像を転写
 
 
-                results.ResultSet.box.forEach(result => {
+                box_list.forEach(result => {
                     var resultXmin = result.xmin / imageWidthRatio;
                     var resultYmin = result.ymin / imageHeightRatio;
                     var resultXmax = result.xmax / imageWidthRatio;
@@ -79,15 +83,12 @@ debugButton.addEventListener('click', function() {
                     context.fillText(result.display_txt, resultXmin , resultYmin - 3);
                     context.strokeRect(resultXmin, resultYmin, resultXmax - resultXmin, resultYmax - resultYmin);
                     console.log(result);
+                    console.log(resultXmin);
                 });
             }
             image.src = evt.target.result;
         }
         reader.readAsDataURL(screwImageBlob);
-
-
-
-
 
     });
 });
