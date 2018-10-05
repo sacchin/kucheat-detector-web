@@ -55,7 +55,40 @@ debugButton.addEventListener('click', function() {
         }
         $("#response").text("送信失敗…")
     }).then(function(json) {
+        var image = new Image();
+        var reader = new FileReader();
+        var results = json
         $("#response").text(JSON.stringify(json))
+        //{"ResultSet":{"box":[{"display_txt":"l1","label":"l1","xmax":50,"xmin":0,"ymax":50,"ymin":0}],"explanatory":{"explanatory":{"text":"2つの くちを もつ。 こうとうぶの おおアゴには\nみかくが ないため にがてな ものは こちらで たべる。","versions":"ウルトラムーン"},"title":"クチート【あざむきポケモン】"},"filename":"blob_1538726393.1219766.png","result":"ok"}}
+
+        reader.onload = function(evt) {
+            image.onload = function() {
+                let imageWidthRatio = image.width / imageWidth
+                let imageHeightRatio = image.height / imageHeight
+                snapshotCanvas[0].width = imageWidth
+                snapshotCanvas[0].height = imageHeight
+                context.drawImage(image, 0, 0,image.width,image.height,0,0,imageWidth,imageHeight); //canvasに画像を転写
+
+                console.log(results.ResultSet);
+
+                // results.forEach(result => {
+                //     context.font = "20px gradient";
+                //     var resultXmin = result.xmin / imageWidthRatio;
+                //     var resultYmin = result.ymin / imageHeightRatio;
+                //     var resultXmax = result.xmax / imageWidthRatio;
+                //     var resultYmax = result.ymax / imageHeightRatio
+                //     context.fillText(result.class_name, resultXmin , resultYmin - 3);
+                //     context.strokeRect(resultXmin, resultYmin, resultXmax - resultXmin, resultYmax - resultYmin)
+                // });
+            }
+            image.src = evt.target.result;
+        }
+        reader.readAsDataURL(screwImageBlob);
+
+
+
+
+
     });
 });
 sendButton.addEventListener('click', function() {
