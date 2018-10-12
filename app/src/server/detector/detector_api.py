@@ -48,7 +48,10 @@ def explanatory_json():
     text_list = explanatory['text_list']
     mod = int(time.time() * 100) % len(text_list)
 
-    return {"title": '{}{}'.format(name, classification), "explanatory": text_list[mod]}
+    return {
+        "title": '{}{}'.format(name, classification),
+        "explanatory": text_list[mod]
+    }
 
 
 @app.route('/index')
@@ -66,7 +69,10 @@ def test():
         logger.info("serving index")
         try:
             if 'file' not in request.files:
-                return jsonify(ResultSet={"result": "ng", "message": "no image"})
+                return jsonify(ResultSet={
+                    "result": "ng",
+                    "message": "no image"
+                })
 
             img_file = request.files['file']
             saved, filename = saveImage(save_path, img_file)
@@ -76,11 +82,17 @@ def test():
 
             if saved:
                 uploadGoogleDrive(save_path, filename)
-                
-                box = ssd_predict_mock(save_path, filename)
+
+                box = ssd_predict(save_path, filename)
                 ej = explanatory_json()
 
-                return jsonify(ResultSet={"result": "ok", "filename": filename, "box": box, "explanatory": ej})
+                return jsonify(
+                    ResultSet={
+                        "result": "ok",
+                        "filename": filename,
+                        "box": box,
+                        "explanatory": ej
+                    })
             else:
                 return jsonify(ResultSet={"result": "ng", "message": filename})
 
@@ -100,7 +112,7 @@ def test():
             logger.error("Unexpected error:{}".format(sys.exc_info()[0]))
             return jsonify(ResultSet={"result": "ng", "box": "except"})
 
-    return jsonify(ResultSet={"result": "ng", "message":"only support post."})
+    return jsonify(ResultSet={"result": "ng", "message": "only support post."})
 
 
 @app.route('/detect', methods=['GET', 'POST'])
@@ -113,11 +125,15 @@ def detect():
 
         if saved:
             uploadGoogleDrive(save_path, filename)
-            
+
             box = ssd_predict_mock(save_path, filename)
             ej = explanatory_json()
 
-            return jsonify(ResultSet={"result": filename, "box": box, "explanatory": ej})
+            return jsonify(ResultSet={
+                "result": filename,
+                "box": box,
+                "explanatory": ej
+            })
         else:
             return jsonify(ResultSet={"result": "ext is not allowed"})
 
@@ -161,14 +177,20 @@ def uploadGoogleDrive(save_path, filename):
 
 def ssd_predict_mock(save_path, filename):
     box_array = []
-    box_array.append({'xmin': 0, 'ymin': 0, 'xmax': 50, 'ymax': 50, 'label': 'l1', 'display_txt': 'l1'})
+    box_array.append({
+        'xmin': 0,
+        'ymin': 0,
+        'xmax': 50,
+        'ymax': 50,
+        'label': 'l1',
+        'display_txt': 'l1'
+    })
 
     return box_array
 
 
 def ssd_predict(save_path, filename):
     weight_file = current_app.config['WEIGHT_FILE']
-    mawile_pkl_file = current_app.config['MAWILE_PICKLE_FILE']
     prior_pkl_file = current_app.config['PRIOR_PICKLE_FILE']
     input_shape = (300, 300, 3)
     NUM_CLASSES = 21
@@ -179,7 +201,8 @@ def ssd_predict(save_path, filename):
     priors = pickle.load(open(prior_pkl_file, 'rb'))
     bbox_util = BBoxUtility(NUM_CLASSES, priors)
 
-    img = image.load_img(os.path.join(save_path, filename), target_size=(300, 300))
+    img = image.load_img(
+        os.path.join(save_path, filename), target_size=(300, 300))
     img = image.img_to_array(img)
     inputs = preprocess_input(np.array([img.copy()]))
     preds = model.predict(inputs, batch_size=1, verbose=1)
@@ -210,6 +233,13 @@ def ssd_predict(save_path, filename):
         ymax = int(round(top_ymax[i] * img.shape[0]))
         label = int(top_label_indices[i])
         display_txt = '{:0.2f}, {}'.format(top_conf[i], label)
-        box_array.append({'xmin': xmin, 'ymin': ymin, 'xmax': xmax, 'ymax': ymax, 'label': label, 'display_txt': display_txt})
+        box_array.append({
+            'xmin': xmin,
+            'ymin': ymin,
+            'xmax': xmax,
+            'ymax': ymax,
+            'label': label,
+            'display_txt': display_txt
+        })
 
     return box_array
