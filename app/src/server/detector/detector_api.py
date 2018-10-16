@@ -198,10 +198,12 @@ def ssd_predict(save_path, filename):
     priors = pickle.load(open(prior_pkl_file, 'rb'))
     bbox_util = BBoxUtility(NUM_CLASSES, priors)
 
-    img = image.load_img(
-        os.path.join(save_path, filename), target_size=(300, 300))
+    img_path = os.path.join(save_path, filename)
+    img = image.load_img(img_path, target_size=(300, 300))
     img = image.img_to_array(img)
     inputs = preprocess_input(np.array([img.copy()]))
+    origin_image = imread(img_path)
+
     preds = model.predict(inputs, batch_size=1, verbose=1)
     results = bbox_util.detection_out(preds)
 
@@ -224,10 +226,10 @@ def ssd_predict(save_path, filename):
 
     box_array = []
     for i in range(top_conf.shape[0]):
-        xmin = int(round(top_xmin[i] * img.shape[1]))
-        ymin = int(round(top_ymin[i] * img.shape[0]))
-        xmax = int(round(top_xmax[i] * img.shape[1]))
-        ymax = int(round(top_ymax[i] * img.shape[0]))
+        xmin = int(round(top_xmin[i] * origin_image.shape[1]))
+        ymin = int(round(top_ymin[i] * origin_image.shape[0]))
+        xmax = int(round(top_xmax[i] * origin_image.shape[1]))
+        ymax = int(round(top_ymax[i] * origin_image.shape[0]))
         label = int(top_label_indices[i])
         display_txt = '{:0.2f}, {}'.format(top_conf[i], label)
         box_array.append({
