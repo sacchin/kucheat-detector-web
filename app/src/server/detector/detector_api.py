@@ -56,8 +56,6 @@ def explanatory_json():
 
 @app.route('/index')
 def index():
-    logger = current_app.logger
-    logger.info("serving index")
     return render_template('detect.html')
 
 
@@ -66,7 +64,6 @@ def test():
     save_path = current_app.config['SAVE_PATH']
     if request.method == 'POST':
         logger = current_app.logger
-        logger.info("serving index")
         try:
             if 'file' not in request.files:
                 return jsonify(ResultSet={
@@ -141,12 +138,10 @@ def detect():
 
 
 def saveImage(save_path, img_file):
-    logger = current_app.logger
     time_id = time.time()
     img_file.filename = "{}_{}.png".format(img_file.filename, time_id)
     if img_file and allowed_file(img_file.filename):
         filename = secure_filename(img_file.filename)
-        logger.info("secure file name is {}".format(filename))
         dir_preparation(save_path)
         img_file.save(os.path.join(save_path, filename))
         return (True, filename)
@@ -190,6 +185,8 @@ def ssd_predict_mock(save_path, filename):
 
 
 def ssd_predict(save_path, filename):
+    logger = current_app.logger
+    
     weight_file = current_app.config['WEIGHT_FILE']
     prior_pkl_file = current_app.config['PRIOR_PICKLE_FILE']
     input_shape = (300, 300, 3)
@@ -242,4 +239,5 @@ def ssd_predict(save_path, filename):
             'display_txt': display_txt
         })
 
+    logger.info("detect {}. result is {}".format(filename, box_array))
     return box_array

@@ -21,7 +21,6 @@ function uploadPhoto() {
     var name, fd = new FormData();
     fd.append('file', screwImageBlob); // ファイルを添付する
 
-    console.log(url_d)
     fetch(url_d, {
         method: 'POST',
         body: fd
@@ -39,7 +38,6 @@ function uploadPhoto() {
         $("#response").text(JSON.stringify(json))
         $("#title").text(explanatory.title)
         $("#explanatory").text(explanatory.explanatory.text)
-        //{"ResultSet":{"box":[{"display_txt":"l1","label":"l1","xmax":50,"xmin":0,"ymax":50,"ymin":0}],"explanatory":{"explanatory":{"text":"2つの くちを もつ。 こうとうぶの おおアゴには\nみかくが ないため にがてな ものは こちらで たべる。","versions":"ウルトラムーン"},"title":"クチート【あざむきポケモン】"},"filename":"blob_1538726393.1219766.png","result":"ok"}}
 
         reader.onload = function(evt) {
             image.onload = function() {
@@ -50,11 +48,14 @@ function uploadPhoto() {
                 context.drawImage(image, 0, 0, image.width, image.height, 0, 0, imageWidth, imageHeight); //canvasに画像を転写
 
 
+                console.log(`ratio is (${imageWidthRatio}, ${imageHeightRatio})`)
                 box_list.forEach(result => {
+                    console.log(`result is (${result.xmin}, ${result.ymin}, ${result.xmax}, ${result.ymax}).`);
                     var resultXmin = result.xmin / imageWidthRatio;
                     var resultYmin = result.ymin / imageHeightRatio;
                     var resultXmax = result.xmax / imageWidthRatio;
                     var resultYmax = result.ymax / imageHeightRatio;
+                    console.log(`extended result is (${resultXmin}, ${resultYmin}, ${resultXmax}, ${resultYmax}).`);
                     context.font = "20px gradient";
                     context.fillText(result.display_txt, resultXmin , resultYmin - 3);
                     context.strokeRect(resultXmin, resultYmin, resultXmax - resultXmin, resultYmax - resultYmin);
